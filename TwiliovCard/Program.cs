@@ -34,7 +34,7 @@ TwilioClient.Init(twilioAccountSID, twilioAuthToken);
 var messageOptions = new CreateMessageOptions(new PhoneNumber("<to number>"));
 messageOptions.Body = "This is the main contact for Néstor.";
 messageOptions.MediaUrl = new List<Uri>() { new Uri(serverUrl + vCardFileName) };
-messageOptions.SendAsMms = true;
+//messageOptions.SendAsMms = true;
 messageOptions.MessagingServiceSid = twilioMessagingServiceSid;
 
 //messageOptions.SendAt = DateTime.UtcNow.AddMinutes(20);
@@ -45,5 +45,10 @@ var message = MessageResource.Create(messageOptions);
 
 Console.WriteLine($"Message SID: {message.Sid}");
 Console.WriteLine($"Message Status: {message.Status}");
+
+// wait a couple of seconds before deleting the file,
+// so Twilio can download the file and send it as MMS
+await Task.Delay(5000);
+
 
 File.Delete(SavePath);
